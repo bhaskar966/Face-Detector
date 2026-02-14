@@ -71,7 +71,8 @@ fun AppNavGraph(
                 },
                 onBackPressed = {
                     navController.navigateUp()
-                }
+                },
+                paddingValues = paddingValues
             )
         }
     }

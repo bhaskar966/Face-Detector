@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,7 +43,8 @@ fun FaceDetectionScreen(
     onEvent: (FaceDetectionUiEvents) -> Unit,
     eventChannel: Flow<FaceDetectionUiEvent>,
     onPhotoCaptured: (Bitmap) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    paddingValues: PaddingValues
 ) {
 
     val context = LocalContext.current
@@ -67,7 +69,8 @@ fun FaceDetectionScreen(
         uiState = faceDetectionUiState,
         onEvent = onEvent,
         onBackPressed = onBackPressed,
-        eventChannel = eventChannel
+        eventChannel = eventChannel,
+        paddingValues = paddingValues
     )
 }
 
@@ -76,9 +79,14 @@ fun FaceDetectionContent(
     uiState: FaceDetectionUiState,
     onEvent: (FaceDetectionUiEvents) -> Unit,
     onBackPressed: () -> Unit,
-    eventChannel: Flow<FaceDetectionUiEvent>
+    eventChannel: Flow<FaceDetectionUiEvent>,
+    paddingValues: PaddingValues
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+    ) {
         // Camera preview with face detection
         if (uiState.isCameraReady || uiState.isLoading) {
             CameraPreviewWithDetection(

@@ -6,7 +6,7 @@ An Android application that captures photos with real-time face position verific
 
 https://github.com/user-attachments/assets/4d27d15f-0554-450f-8701-48e58f9aebb2
 
-- **APK Download**: [GitHub Releases](https://github.com/bhaskar966/Face-Detector)
+- **APK Download**: [GitHub Releases](https://github.com/bhaskar966/Face-Detector/releases/download/1.0/FaceDetection-app-release.apk)
 
 ***
 

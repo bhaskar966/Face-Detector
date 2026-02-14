@@ -13,9 +13,12 @@ import com.bhaskar.facedetector.presentation.faceDetection.components.FaceDetect
 import com.bhaskar.facedetector.presentation.faceDetection.components.FaceDetectionUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,9 +31,9 @@ class FaceDetectionViewModel(
 
     private var viewDimensions: ViewDimensions? = null
 
-    // Channel for one-time events
-    private val _eventChannel = Channel<FaceDetectionUiEvent>(Channel.BUFFERED)
-    val eventChannel = _eventChannel.receiveAsFlow()
+    // SharedFlow for one-time events
+    private val _eventChannel = MutableSharedFlow<FaceDetectionUiEvent>()
+    val eventChannel = _eventChannel.asSharedFlow()
 
     fun onEvent(event: FaceDetectionUiEvents) {
         when(event){
@@ -122,11 +125,11 @@ class FaceDetectionViewModel(
 
         if (currentState.faceDetectionResult?.isInsideOval == true) {
             viewModelScope.launch {
-                _eventChannel.send(FaceDetectionUiEvent.TriggerPhotoCapture)
+                _eventChannel.emit(FaceDetectionUiEvent.TriggerPhotoCapture)
             }
         } else {
             viewModelScope.launch {
-                _eventChannel.send(
+                _eventChannel.emit(
                     FaceDetectionUiEvent.ShowToast("Please position your face inside the oval")
                 )
             }
@@ -183,7 +186,7 @@ class FaceDetectionViewModel(
         val bitmap = _faceDetectionUiState.value.capturedImageBitmap ?: return
 
         viewModelScope.launch {
-            _eventChannel.send(FaceDetectionUiEvent.NavigateBackWithResult(bitmap))
+            _eventChannel.emit(FaceDetectionUiEvent.NavigateBackWithResult(bitmap))
         }
     }
 

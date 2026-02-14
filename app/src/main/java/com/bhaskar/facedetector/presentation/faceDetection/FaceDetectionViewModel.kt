@@ -143,7 +143,10 @@ class FaceDetectionViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val matrix = Matrix().apply {
                 postRotate(rotation)
-                postScale(-1f, 1f)
+                // Flip the image when clicked from front camera - to mirror the image
+                if (faceDetectionUiState.value.cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA){
+                    postScale(-1f, 1f)
+                }
             }
 
             val newBitmap = Bitmap.createBitmap(

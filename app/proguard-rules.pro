@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# ML Kit
+-keep class com.google.mlkit.** { *; }
+-keep class com.google.android.gms.** { *; }
+
+# Prevent stripping of metadata that might be used by reflection
+-keepattributes Signature
+-keepattributes *Annotation*
